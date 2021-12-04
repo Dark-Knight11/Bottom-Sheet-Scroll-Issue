@@ -1,17 +1,12 @@
 package com.hypernova.bottomsheet
 
-import android.transition.Visibility
-import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredSize
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -27,19 +22,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.hypernova.bottomsheet.navigation.NavGraph
 import com.hypernova.bottomsheet.navigation.Screens
@@ -54,16 +46,20 @@ fun HomeScreen(bottomNavItems: List<Screens>, bottomSheetItems: List<Screens>) {
     val scope = rememberCoroutineScope()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
-
     val drawerState = rememberBottomDrawerState(BottomDrawerValue.Closed)
-    var fabIconVisibility by remember { mutableStateOf(true) }
+
     var bottomBarVisibility by remember { mutableStateOf(true) }
     val routesWithBottomNav = listOf(Screens.LandingPage.route, Screens.SecondPage.route)
     bottomBarVisibility = currentDestination?.hierarchy?.any {
         routesWithBottomNav.contains(it.route)
     } == true
 
-    val gesturesEnabled by remember { mutableStateOf(false) }
+    var fabIconVisibility by remember { mutableStateOf(true) }
+    var gesturesEnabled by remember { mutableStateOf(false) }
+    LaunchedEffect(key1 = drawerState.isOpen, key2 = drawerState.isClosed) {
+        gesturesEnabled = drawerState.isOpen
+        fabIconVisibility = drawerState.isClosed
+    }
 
     Scaffold(
         floatingActionButton = {
@@ -84,7 +80,6 @@ fun HomeScreen(bottomNavItems: List<Screens>, bottomSheetItems: List<Screens>) {
                 ) {
                     FloatingActionButton(
                         onClick = {
-//                            Toast.makeText(context, "Clicked", Toast.LENGTH_SHORT).show()
                             if (drawerState.isClosed) {
                                 scope.launch { drawerState.expand() }
                             } else {
@@ -93,7 +88,7 @@ fun HomeScreen(bottomNavItems: List<Screens>, bottomSheetItems: List<Screens>) {
                             fabIconVisibility = !fabIconVisibility
                         },
                         content = {
-                            Icon(
+                            Icon (
                                 Icons.Default.Menu, contentDescription = "Open Drawer",
                                 tint = Color.White
                             )
@@ -195,7 +190,6 @@ fun BottomSheet(
                             .clickable {
                                 scope.launch {
                                     drawerState.close()
-                                    //delay(10)
                                     navController.navigate(screen.route) {
                                         popUpTo(navController.graph.findStartDestination().id) {
                                             saveState = true
