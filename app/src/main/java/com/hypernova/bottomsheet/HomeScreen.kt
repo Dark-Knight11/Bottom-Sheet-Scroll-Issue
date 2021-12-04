@@ -54,11 +54,12 @@ fun HomeScreen(bottomNavItems: List<Screens>, bottomSheetItems: List<Screens>) {
         routesWithBottomNav.contains(it.route)
     } == true
 
-    var fabIconVisibility by remember { mutableStateOf(true) }
-    var gesturesEnabled by remember { mutableStateOf(false) }
-    LaunchedEffect(key1 = drawerState.isOpen, key2 = drawerState.isClosed) {
-        gesturesEnabled = drawerState.isOpen
-        fabIconVisibility = drawerState.isClosed
+    val fabIconVisi = remember { mutableStateOf(false) }
+    val fabIconVisibility by remember {
+        derivedStateOf { drawerState.isClosed and fabIconVisi.value }
+    }
+    val gesturesEnabled by remember {
+        derivedStateOf { drawerState.isOpen }
     }
 
     Scaffold(
@@ -85,7 +86,7 @@ fun HomeScreen(bottomNavItems: List<Screens>, bottomSheetItems: List<Screens>) {
                             } else {
                                 scope.launch { drawerState.close() }
                             }
-                            fabIconVisibility = !fabIconVisibility
+                            fabIconVisi.value = !fabIconVisi.value
                         },
                         content = {
                             Icon (
