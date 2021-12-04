@@ -21,7 +21,7 @@ import com.hypernova.bottomsheet.navigation.Screens
 import com.hypernova.bottomsheet.screens.CommonLayout
 
 @Composable
-fun LandingPage(navController: NavHostController) {
+fun LandingPage() {
     Column(
         modifier = Modifier
             .background(Color.White)

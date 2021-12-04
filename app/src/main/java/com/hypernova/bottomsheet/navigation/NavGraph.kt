@@ -16,10 +16,10 @@ fun NavGraph(navController: NavHostController) {
         startDestination = Screens.LandingPage.route
     ) {
         composable(route = Screens.LandingPage.route) {
-            LandingPage(navController)
+            LandingPage()
         }
         composable(route = Screens.SecondPage.route) {
-           SecondPage(navController)
+           SecondPage()
         }
         composable(route = Screens.SheetScreen1.route) {
             FirstScreen(navController)

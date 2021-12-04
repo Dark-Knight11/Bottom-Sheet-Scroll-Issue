@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -12,10 +13,11 @@ import com.hypernova.bottomsheet.ui.theme.BottomSheetTheme
 
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
+@ExperimentalFoundationApi
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        var bottomNavItems = listOf(Screens.LandingPage, Screens.SecondPage)
+        val bottomNavItems = listOf(Screens.LandingPage, Screens.SecondPage)
         val bottomSheetItems = listOf(
             Screens.SheetScreen1,
             Screens.SheetScreen2,
