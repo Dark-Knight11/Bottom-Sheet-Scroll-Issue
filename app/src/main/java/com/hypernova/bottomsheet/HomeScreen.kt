@@ -1,9 +1,6 @@
 package com.hypernova.bottomsheet
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
+import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -14,10 +11,13 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.BottomCenter
+import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
@@ -54,12 +54,12 @@ fun HomeScreen(bottomNavItems: List<Screens>, bottomSheetItems: List<Screens>) {
         routesWithBottomNav.contains(it.route)
     } == true
 
-    val fabIconVisi = remember { mutableStateOf(false) }
-    val fabIconVisibility by remember {
-        derivedStateOf { drawerState.isClosed and fabIconVisi.value }
-    }
+    var fabIconVisibility by remember { mutableStateOf(false) }
     val gesturesEnabled by remember {
         derivedStateOf { drawerState.isOpen }
+    }
+    LaunchedEffect(key1 = drawerState.isClosed) {
+        fabIconVisibility = drawerState.isClosed
     }
 
     Scaffold(
@@ -86,13 +86,29 @@ fun HomeScreen(bottomNavItems: List<Screens>, bottomSheetItems: List<Screens>) {
                             } else {
                                 scope.launch { drawerState.close() }
                             }
-                            fabIconVisi.value = !fabIconVisi.value
+                            fabIconVisibility = !fabIconVisibility
                         },
                         content = {
-                            Icon (
-                                Icons.Default.Menu, contentDescription = "Open Drawer",
-                                tint = Color.White
-                            )
+                            AnimatedVisibility(
+                                visible = fabIconVisibility,
+                                enter = expandIn(expandFrom = TopCenter),
+                                exit = shrinkOut(shrinkTowards = TopCenter)
+                            ) {
+                                Icon(
+                                    Icons.Default.Menu, contentDescription = "Open Drawer",
+                                    tint = Color.White
+                                )
+                            }
+                            AnimatedVisibility(
+                                visible = !fabIconVisibility,
+                                enter = expandIn(expandFrom = BottomCenter),
+                                exit = shrinkOut(shrinkTowards = BottomCenter)
+                            ) {
+                                Icon(
+                                    Icons.Default.Close, contentDescription = "Close Drawer",
+                                    tint = Color.White
+                                )
+                            }
                         },
                         backgroundColor = Color.Black
                     )
