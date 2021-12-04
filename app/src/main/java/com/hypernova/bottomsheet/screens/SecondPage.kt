@@ -8,17 +8,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.compose.foundation.lazy.LazyColumn
 
 @Composable
 fun SecondPage(navHostController: NavHostController) {
-    Column(
-        modifier = Modifier
-            .background(Color.White)
+    LazyColumn(
+        modifier = androidx.compose.ui.Modifier
+            .background(androidx.compose.ui.graphics.Color.White)
             .fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(35.dp),
+        horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally,
     ) {
-        CommonLayout(text = "Second Page")
+        items(21) {
+            CommonLayout(text = "Second Page")
+        }
     }
 }

@@ -1,15 +1,17 @@
 package com.hypernova.bottomsheet.navigation
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import com.hypernova.bottomsheet.*
+import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.hypernova.bottomsheet.LandingPage
 import com.hypernova.bottomsheet.screens.*
+import com.google.accompanist.navigation.animation.composable
 
+@ExperimentalAnimationApi
 @Composable
 fun NavGraph(navController: NavHostController) {
-    NavHost(
+    AnimatedNavHost(
         navController = navController,
         startDestination = Screens.LandingPage.route
     ) {

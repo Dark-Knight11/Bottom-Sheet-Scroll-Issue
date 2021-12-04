@@ -3,6 +3,7 @@ package com.hypernova.bottomsheet
 import android.transition.Visibility
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
@@ -39,15 +40,17 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.hypernova.bottomsheet.navigation.NavGraph
 import com.hypernova.bottomsheet.navigation.Screens
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
+@ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
 fun HomeScreen(bottomNavItems: List<Screens>, bottomSheetItems: List<Screens>) {
-    val navController = rememberNavController()
+    val navController = rememberAnimatedNavController()
     val scope = rememberCoroutineScope()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
@@ -173,6 +176,7 @@ fun BottomBar(
     }
 }
 
+@ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
 fun BottomSheet(
@@ -231,7 +235,7 @@ fun BottomSheet(
         drawerState = drawerState,
         drawerBackgroundColor = MaterialTheme.colors.background,
         drawerShape = RoundedCornerShape(topStart = 25.dp, topEnd = 25.dp),
-        content = { NavGraph(navController = navController) },
+        content = { NavGraph(navController) },
         gesturesEnabled = gesturesEnabled
     )
 }
